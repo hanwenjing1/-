@@ -5,7 +5,8 @@
         <image src="/static/my/default.png" v-if="defaultimg" class="my-photo"></image>
         <image :src="headimgurl" v-if="!defaultimg"></image>
       </div>
-      <div class="my-nickname">{{nick_name}}</div>
+      <button open-type="getUserInfo" @getuserinfo="bindGetUserInfo" @click="getUserInfo1" class="gologin" v-if="isLogin">点击登录</button>
+      <div class="my-nickname" v-if="!isLogin">{{nick_name}}</div>
     </div>
     <div class="content">
       <ul>
@@ -16,13 +17,6 @@
             <image class="arrow" src="/static/my/iconNext.png"></image>
           </div>
         </li>
-        <!--<li class="my-item" @click="getLocation">-->
-          <!--<image class="icon" src="/static/my/icon1.png"></image>-->
-          <!--<div class="my-text">-->
-            <!--<span>获取地理位置</span>-->
-            <!--<image class="arrow" src="/static/my/iconNext.png"></image>-->
-          <!--</div>-->
-        <!--</li>-->
         <li class="my-item" @click="getLocation">
           <image class="icon" src="/static/my/map.png"></image>
           <div class="my-text">
@@ -43,6 +37,7 @@
         headimgurl:'',
         nick_name:'',
         defaultimg:true,
+        isLogin:true,
         data: {
           name: '',
           address: '',
@@ -52,6 +47,38 @@
       }
     },
     methods:{
+      getSetting () {
+        let that = this
+        wx.getSetting({
+          success: function (res) {
+            if (res.authSetting['scope.userInfo']) {
+              wx.getUserInfo({
+                success: function (res) {
+                  that.isLogin = false
+                  console.log(res.userInfo)
+                  console.log('用户已经授权过')
+                }
+              })
+            } else {
+              console.log('用户还未授权过')
+            }
+          }
+        })
+      },
+      getUserInfo1 () {
+        if (wx.canIUse('button.open-type.getUserInfo')) {
+        } else {
+          console.log('请升级微信版本')
+        }
+      },
+      bindGetUserInfo (e) {
+        if (e.mp.detail.rawData) {
+          this.getSetting()
+          console.log('用户按了允许授权按钮')
+        } else {
+          console.log('用户按了拒绝按钮')
+        }
+      },
       gomyInfos() {
         wx.navigateTo({
           url: '/pages/message/main'
@@ -101,6 +128,23 @@
       }
     },
     mounted(){
+      wx.login({
+        success (res) {
+          if (res.code){
+            console.log(res)
+//            wx.request({
+//              url: 'test.php', //接口地址
+//              data: {code:res.code},
+//              header: {
+//                'content-type': 'application/json' //默认值
+//              },
+//              success: function (res) {//换取openid和session_key
+//                console.log(res.data)
+//              }
+//            })
+          }
+        },
+      })
       this.$httpWX.get({
         url: '/yaoshen/user/getUserInfoById?id=7ef33070-b974-4d86-bbc9-1d1f54b46c27'
       }).then(res => {
@@ -124,6 +168,14 @@
     height: 300rpx;
     background: url(../../../static/my/myHeaderBg.jpg) no-repeat center top;
     text-align: center;
+  }
+  .my-header .gologin{
+    width:250rpx;
+    background-color: transparent;
+    font-size:40rpx;
+  }
+  .gologin::after {
+    border: none;
   }
   .my-wrap .my-header .my-pic {
     display: inline-block;
@@ -150,6 +202,7 @@
 
   .my-wrap .my-header .my-nickname {
     padding-top: 20rpx;
+    font-size:40rpx;
   }
 
   .content {
