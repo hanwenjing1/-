@@ -1,0 +1,61 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true,
+		"autoAudits": false,
+		"checkInvalidKey": true
+	},
+	"miniprogramRoot": "dist/wx/",
+	"compileType": "miniprogram",
+	"appid": "wx0ee9e8de5d770358",
+	"projectname": "my-project",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 2,
+			"list": [
+				{
+					"id": -1,
+					"name": "列表页",
+					"pathName": "pages/gene/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的",
+					"pathName": "pages/my/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "基本信息",
+					"pathName": "pages/message/main",
+					"scene": null
+				}
+			]
+		}
+	}
+}
